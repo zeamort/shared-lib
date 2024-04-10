@@ -27,12 +27,12 @@ def call(dockerRepoName, imageName, portNum, service) {
             stage('Security Check'){
                 steps {
                     dir(service) {
-                        sh ''' 
+                        sh script: '''
                         . ./.venv/bin/activate
                         export PATH=$PATH:~/.local/bin
-                        safety check -r requirements.txt --full-report
+                        safety check -r requirements.txt --full-report > safety_report.txt
                         ''', returnStdout: false
-                        archiveArtifacts artifacts: 'safety_report.txt', onlyIfSuccessful: true 
+                        archiveArtifacts artifacts: 'safety_report.txt', onlyIfSuccessful: false
                     }
                 }
             }
