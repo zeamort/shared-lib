@@ -29,6 +29,7 @@ def call(dockerRepoName, imageName, portNum, service) {
                     dir(service) {
                         sh ''' 
                         . ./.venv/bin/activate
+                        export PATH=$PATH:~/.local/bin
                         safety check -r requirements.txt --full-report
                         '''
                     }
