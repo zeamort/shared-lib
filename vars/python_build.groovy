@@ -1,4 +1,4 @@
-def call(dockerRepoName, imageName, portNum) {
+def call(dockerRepoName, imageName, portNum, service) {
     pipeline {
         agent any
         parameters {
@@ -7,7 +7,7 @@ def call(dockerRepoName, imageName, portNum) {
         stages {
             stage('Build') {
                 steps {
-                    
+                    sh "cd ${service}"
                     sh 'if [ -d ".venv" ]; then rm -Rf .venv; fi'
                     sh 'python3 -m venv .venv'
                     sh '. ./.venv/bin/activate'
@@ -22,7 +22,7 @@ def call(dockerRepoName, imageName, portNum) {
             }
             stage('Security Check'){
                 steps {
-                //add snyk or safety?
+                    sh 'echo hello'
                 }
             }
             stage('Package') {
@@ -30,10 +30,10 @@ def call(dockerRepoName, imageName, portNum) {
                     expression { env.GIT_BRANCH == 'origin/main' }
                 }
                 steps {
-                    withCredentials([string(credentialsId: 'DockerHub', variable: 'TOKEN')]) {
-                        sh "docker login -u 'stlouis9' -p '$TOKEN' docker.io"
-                        sh "docker build -t ${dockerRepoName}:latest --tag stlouis9/${dockerRepoName}:${imageName} ."
-                        sh "docker push stlouis9/${dockerRepoName}:${imageName}"
+                    withCredentials([string(credentialsId: 'DockerHubMorteza', variable: 'TOKEN')]) {
+                        sh "docker login -u 'zeamort' -p '$TOKEN' docker.io"
+                        sh "docker build -t ${dockerRepoName}:latest --tag zeamort/${dockerRepoName}:${imageName} ."
+                        sh "docker push zeamort/${dockerRepoName}:${imageName}"
                     }
                 }
             }
