@@ -11,7 +11,7 @@ def call(dockerRepoName, imageName, portNum, service) {
                         sh 'if [ -d ".venv" ]; then rm -Rf .venv; fi'
                         sh 'python3 -m venv .venv'
                         sh '. ./.venv/bin/activate'
-                        sh 'pip install -r requirements.txt --break-system-packages -v' 
+                        sh 'pip install -r requirements.txt --break-system-packages' 
                         sh 'pip install --upgrade flask --break-system-packages'
                     }
                 }
