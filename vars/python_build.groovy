@@ -58,8 +58,8 @@ def call(dockerRepoName, service) {
                     sshagent(['Morteza3855VM']) { 
                         sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-40-150-21.us-west-2.compute.amazonaws.com '
-                            docker images | grep "${dockerRepoName}" | grep -v "latest" | awk '{print $3}' | xargs -r docker rmi -f
-                            cd ~/api-microservices-project/deployment && docker compose pull "${dockerRepoName}"
+                            docker images | grep ${dockerRepoName} | grep -v "latest" | awk '{print \$3}' | xargs -r docker rmi -f
+                            cd ~/api-microservices-project/deployment && docker compose pull ${dockerRepoName}
                             docker compose up -d --scale receiver=3 --force-recreate
                         '
                         """
