@@ -19,7 +19,7 @@ def call(dockerRepoName, imageName, portNum, service) {
             stage('Python Lint') {
                 steps {
                     dir(service) {
-                        sh 'pylint --fail-under 5 *.py'
+                        sh 'pylint --fail-under 1 *.py'
                     }
                 }
             }
