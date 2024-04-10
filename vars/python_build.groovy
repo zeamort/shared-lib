@@ -28,7 +28,7 @@ def call(dockerRepoName, imageName, portNum, service) {
                 steps {
                     dir(service) {
                         sh ''' 
-                        . ./.venv/bin/activate'
+                        . ./.venv/bin/activate
                         safety check -r requirements.txt --full-report
                         '''
                     }
