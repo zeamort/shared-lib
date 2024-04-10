@@ -31,7 +31,8 @@ def call(dockerRepoName, imageName, portNum, service) {
                         . ./.venv/bin/activate
                         export PATH=$PATH:~/.local/bin
                         safety check -r requirements.txt --full-report
-                        '''
+                        ''', returnStdout: false
+                        archiveArtifacts artifacts: 'safety_report.txt', onlyIfSuccessful: true 
                     }
                 }
             }
