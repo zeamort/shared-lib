@@ -57,7 +57,7 @@ def call(dockerRepoName, imageName, portNum, service) {
                 steps {
                     sshagent(['Morteza3855VM']) { 
                         sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-40-150-21.us-west-2.compute.amazonaws.com 'cd ~/api-microservices-project/deployment && docker compose pull storage receiver processing && docker compose up -d'
+                        ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-40-150-21.us-west-2.compute.amazonaws.com 'cd ~/api-microservices-project/deployment && docker compose pull storage receiver processing && docker compose up -d --scale receiver=3'
                         """
                     }
                 }
