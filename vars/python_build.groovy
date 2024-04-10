@@ -6,9 +6,8 @@ def call(dockerRepoName, imageName, portNum, service) {
         }
         stages {
             stage('Build') {
-                dir(service) {
-                    steps {
-                        sh "cd ${service}"
+                steps {
+                    dir(service) {
                         sh 'if [ -d ".venv" ]; then rm -Rf .venv; fi'
                         sh 'python3 -m venv .venv'
                         sh '. ./.venv/bin/activate'
@@ -18,22 +17,22 @@ def call(dockerRepoName, imageName, portNum, service) {
                 }
             }
             stage('Python Lint') {
-                dir(service) {
-                    steps {
+                steps {
+                    dir(service) {
                         sh 'pylint --fail-under 5 *.py'
                     }
                 }
             }
             stage('Security Check'){
-                dir(service) {
-                    steps {
+                steps {
+                    dir(service) {
                         sh 'echo hello'
                     }
                 }
             }
             stage('Package') {
-                dir(service) {
-                    when {
+                when {
+                    dir(service) {
                         expression { env.GIT_BRANCH == 'origin/main' }
                     }
                     steps {
@@ -46,8 +45,8 @@ def call(dockerRepoName, imageName, portNum, service) {
                 }
             }
             stage('Deliver') {
-                dir(service) {
-                    when {
+                when {
+                    dir(service) {
                         expression { params.DEPLOY }
                     }
                     steps {
