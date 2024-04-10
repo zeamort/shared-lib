@@ -49,9 +49,10 @@ def call(dockerRepoName, imageName, portNum, service) {
                     expression { params.DEPLOY }
                 }
                 steps {
-                    dir(service) {
-                        sh "docker stop ${dockerRepoName} || true && docker rm ${dockerRepoName} || true"
-                        sh "docker run -d -p ${portNum}:${portNum} --name ${dockerRepoName} ${dockerRepoName}:latest"
+                    sshagent(['Morteza3855VM']) { 
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@ec2-52-40-150-21.us-west-2.compute.amazonaws.com 'cd ~/api-microservices-project/deployment && docker compose pull && docker compose up -d'
+                        """
                     }
                 }
             }
