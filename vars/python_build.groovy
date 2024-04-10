@@ -13,6 +13,7 @@ def call(dockerRepoName, imageName, portNum, service) {
                         sh '. ./.venv/bin/activate'
                         sh 'pip install -r requirements.txt --break-system-packages' 
                         sh 'pip install --upgrade flask --break-system-packages'
+                        sh 'pip install safety --break-system-packages'
                     }
                 }
             }
@@ -26,7 +27,8 @@ def call(dockerRepoName, imageName, portNum, service) {
             stage('Security Check'){
                 steps {
                     dir(service) {
-                        sh 'echo hello'
+                        sh '. ./.venv/bin/activate'
+                        sh 'safety check -r requirements.txt --full-report'
                     }
                 }
             }
