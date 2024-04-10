@@ -32,10 +32,10 @@ def call(dockerRepoName, imageName, portNum, service) {
             }
             stage('Package') {
                 when {
+                    expression { env.GIT_BRANCH == 'origin/main' }
+                }
+                steps {
                     dir(service) {
-                        expression { env.GIT_BRANCH == 'origin/main' }
-                    }
-                    steps {
                         withCredentials([string(credentialsId: 'DockerHubMorteza', variable: 'TOKEN')]) {
                             sh "docker login -u 'zeamort' -p '$TOKEN' docker.io"
                             sh "docker build -t ${dockerRepoName}:latest --tag zeamort/${dockerRepoName}:${imageName} ."
@@ -46,10 +46,10 @@ def call(dockerRepoName, imageName, portNum, service) {
             }
             stage('Deliver') {
                 when {
+                    expression { params.DEPLOY }
+                }
+                steps {
                     dir(service) {
-                        expression { params.DEPLOY }
-                    }
-                    steps {
                         sh "docker stop ${dockerRepoName} || true && docker rm ${dockerRepoName} || true"
                         sh "docker run -d -p ${portNum}:${portNum} --name ${dockerRepoName} ${dockerRepoName}:latest"
                     }
